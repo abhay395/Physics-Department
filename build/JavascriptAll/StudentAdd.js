@@ -12,6 +12,26 @@ const submitbtn = document.querySelector('#submitBtn');
 let Rank = 0;
 let examyear = selectExamYear.value;
 let course = selectCourseInput.value;
+
+function updateYearOptions() {
+  // const selectExamYear = document.getElementById('selectExamYear');
+  const currentYear = new Date().getFullYear();
+  const startYear = 2017;  // Starting year
+  const endYear = currentYear;  // Ending year (current year)
+  // Clear any existing options
+  selectExamYear.innerHTML = '';
+
+  // Loop to add options dynamically
+  for (let year = startYear; year <= endYear; year++) {
+      const option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      if (year === currentYear) {
+        option.selected = true;
+    }
+      selectExamYear.appendChild(option);
+  }
+}
 const updateData = async ({ name, cgpa }, id) => {
   const formdata = new FormData();
   formdata.append("name", name);
@@ -186,9 +206,9 @@ const renderData = async () => {
     tableArray.forEach((table) => {
       const div = document.createElement("div");
       div.id = `year${year}`;
-      const h1 = document.createElement("h1");
-      h1.innerHTML = `${year} Year Student`;
-      div.appendChild(h1);
+      const h4 = document.createElement("h4");
+      h4.innerHTML = `${year} Year Student`;
+      div.appendChild(h4);
       div.appendChild(table);
       year++;
       StudentSecition.appendChild(div);
@@ -211,8 +231,8 @@ function createRow(data, rank = 0) {
     <td id="cgpa">${safeText(data.cgpa.toString())}</td>
     <td id="rank">${safeText(rank.toString())}</td>
     <td>
-      <button class="EditBtn">Edit</button>
-      <button class="DeleteBtn">Delete</button>
+      <button class="EditBtn btn btn-warning btn-sm edit-button">Edit</button>
+      <button class="DeleteBtn btn btn-danger btn-sm edit-button">Delete</button>
     </td>
   `;
 
@@ -344,4 +364,5 @@ function sortStudent(tbody) {
   // console.log(studentArr);
 }
 
+window.onload=updateYearOptions()
 renderData();
